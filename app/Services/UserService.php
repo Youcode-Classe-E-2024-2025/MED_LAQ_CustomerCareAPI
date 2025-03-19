@@ -45,8 +45,9 @@ class UserService
         return $user;
     }
 
-    public function deleteUser(User $user)
+    public function deleteUser($id)
     {
+        $user = User::find($id);
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully']);

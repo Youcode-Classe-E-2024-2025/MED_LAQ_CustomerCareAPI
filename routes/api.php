@@ -11,3 +11,7 @@ Route::post('/users', function (Request $request, UserService $userService) {
 Route::put('/users/{id}', function (Request $request, $user , UserService $userService) {
     return $userService->updateUser($user, $request->all());
 });
+
+Route::delete('/users/{id}', function ($user, UserService $userService) {
+    return $userService->deleteUser($user);
+});
