@@ -18,4 +18,14 @@ class UserController extends Controller
     {
         $this->userService->createUser($request->all());
     }
+
+    public function update(Request $request, $id)
+    {
+        $this->userService->updateUser($id, $request->all());
+    }
+
+    public function destroy($id)
+    {
+        $this->userService->deleteUser($id);
+    }
 }
