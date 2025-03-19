@@ -24,4 +24,23 @@ class UserService
 
         return User::create($data);
     }
+
+    public function updateUser(User $user, array $data)
+    {
+        $validator = Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'required|string|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $data['password'] = Hash::make($data['password']);
+
+        $user->update($data);
+
+        return $user;
+    }
 }
