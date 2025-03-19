@@ -25,11 +25,11 @@ class UserService
         return User::create($data);
     }
 
-    public function updateUser(User $user, array $data)
+    public function updateUser($id, array $data)
     {
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'required|string|min:8',
         ]);
 
@@ -39,6 +39,7 @@ class UserService
 
         $data['password'] = Hash::make($data['password']);
 
+        $user = User::find($id);
         $user->update($data);
 
         return $user;
