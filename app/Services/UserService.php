@@ -5,51 +5,50 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class UserService
 {
-    public function createUser(array $data)
+    public function login(Request $request)
     {
-        $validator = Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json($validator->errors(), 400);
         }
 
-        $data['password'] = Hash::make($data['password']);
+        if (!Auth::attempt($request->all())) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        return User::create($data);
+        $user = Auth::user();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $token], 200);
     }
 
-    public function updateUser($id, array $data)
+    public function register(Request $request)
     {
-        $validator = Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'required|string|min:8',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json($validator->errors(), 400);
         }
 
-        $data['password'] = Hash::make($data['password']);
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-        $user = User::find($id);
-        $user->update($data);
-
-        return $user;
-    }
-
-    public function deleteUser($id)
-    {
-        $user = User::find($id);
-        $user->delete();
-
-        return response()->json(['message' => 'User deleted successfully']);
+        return response()->json($user, 201);
     }
 }
