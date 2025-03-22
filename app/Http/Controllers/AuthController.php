@@ -38,4 +38,22 @@ class AuthController extends Controller
             ], $e->getCode() ?: 400);
         }
     }
+
+    public function login(Request $request): JsonResponse
+    {
+        try {
+            $result = $this->authService->login($request->all());
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User logged in successfully',
+                'data' => $result
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode() ?: 400);
+        }
+    }
 }
