@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->text('content');
+            $table->foreignId('ticket_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
+            $table->timestamp('edited_at')->nullable();
+            $table->foreignId('edited_by')->nullable()->constrained('users');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamp('edited_at')->useCurrent();
+            $table->timestamp('deleted_at')->useCurrent();
+            $table->softDeletes();
         });
     }
 
