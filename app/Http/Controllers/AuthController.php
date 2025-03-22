@@ -2,47 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $authService;
+
+    public function __construct(AuthService $authService)
     {
-        //
+        $this->authService = $authService;
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Register a new user
+     * 
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function register(Request $request): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $result = $this->authService->register($request->all());
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User registered successfully',
+                'data' => $result
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode() ?: 400);
+        }
     }
 }
