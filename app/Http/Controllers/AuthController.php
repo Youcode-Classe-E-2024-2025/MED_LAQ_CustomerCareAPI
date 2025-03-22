@@ -56,4 +56,21 @@ class AuthController extends Controller
             ], $e->getCode() ?: 400);
         }
     }
+
+    public function logout(Request $request): JsonResponse
+    {
+        try {
+            $this->authService->logout($request->user());
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User logged out successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode() ?: 400);
+        }
+    }
 }
