@@ -17,7 +17,12 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraph,
+            'user_id' => \App\Models\User::factory(),
+            'closed_at' => now(),
+            'reopened_at' => now(),
+            'resolved_at' => now(),
         ];
     }
 }

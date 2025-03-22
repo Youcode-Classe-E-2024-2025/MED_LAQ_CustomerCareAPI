@@ -10,19 +10,18 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('content');
-            $table->foreignId('user_id')->constrained();
-            $table->timestamp('closed_at')->nullable();
-            $table->timestamp('reopened_at')->nullable();
-            $table->timestamp('resolved_at')->nullable();
-            $table->timestamp('deleted_at')->nullable();
-            $table->softDeletes();
-        });
-    }
+{
+    Schema::create('tickets', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->text('content');
+        $table->foreignId('user_id')->constrained();
+        $table->timestamp('closed_at')->nullable();
+        $table->timestamp('reopened_at')->nullable();
+        $table->timestamp('resolved_at')->nullable();
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

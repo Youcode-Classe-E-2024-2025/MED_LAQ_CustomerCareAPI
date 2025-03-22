@@ -10,23 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('responses', function (Blueprint $table) {
-            $table->id();
-            $table->text('content');
-            $table->foreignId('ticket_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->timestamp('deleted_at')->nullable();
-            $table->softDeletes();
-            $table->timestamp('edited_at')->nullable();
-            $table->foreignId('edited_by')->nullable()->constrained('users');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->timestamp('edited_at')->useCurrent();
-            $table->timestamp('deleted_at')->useCurrent();
-            $table->softDeletes();
-        });
-    }
+{
+    Schema::create('responses', function (Blueprint $table) {
+        $table->id();
+        $table->text('content');
+        $table->foreignId('ticket_id')->constrained();
+        $table->foreignId('user_id')->constrained();
+        $table->timestamp('edited_at')->nullable();
+        $table->foreignId('edited_by')->nullable()->constrained('users');
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

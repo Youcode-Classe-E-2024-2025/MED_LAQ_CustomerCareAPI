@@ -17,7 +17,11 @@ class ResponseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'content' => $this->faker->paragraph,
+            'ticket_id' => \App\Models\Ticket::factory(),
+            'user_id' => \App\Models\User::factory(),
+            'edited_at' => now(),
+            'edited_by' => \App\Models\User::factory(),
         ];
     }
 }
