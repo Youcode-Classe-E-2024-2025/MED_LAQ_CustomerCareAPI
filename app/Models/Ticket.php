@@ -10,6 +10,14 @@ class Ticket extends Model
     /** @use HasFactory<\Database\Factories\TicketFactory> */
     use HasFactory;
 
+    /**
+     * @OA\Schema(
+     *     schema="Ticket",
+     *     title="Ticket",
+     *     description="Ticket model",
+     * )
+     */
+
     protected $fillable = [
         'title',
         'content',

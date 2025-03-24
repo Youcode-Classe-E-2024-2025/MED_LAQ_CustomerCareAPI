@@ -244,9 +244,189 @@
                     }
                 ]
             }
+        },
+        "/api/tickets": {
+            "get": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Get all tickets",
+                "description": "Display a listing of the tickets.",
+                "operationId": "0082053c3590628e674a11ec0d1466e6",
+                "responses": {
+                    "200": {
+                        "description": "List of all tickets",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ticket"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Create a new ticket",
+                "description": "Store a newly created ticket in storage.",
+                "operationId": "93882881cca9046d8c6ddbbab7309b4b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ticket"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ticket created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ticket"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/tickets/{id}": {
+            "get": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Get a ticket by ID",
+                "description": "Display the specified ticket.",
+                "operationId": "62091a82e5103c19191c4c1ebd30ec6f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ticket"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Update an existing ticket",
+                "description": "Update the specified ticket in storage.",
+                "operationId": "1010dcd7a1f352766df66431f1df4745",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ticket"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ticket updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ticket"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Delete a ticket",
+                "description": "Remove the specified ticket from storage.",
+                "operationId": "c37b65ae6ff3ffa8c9e0c14ea4d6a9f7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket deleted successfully"
+                    },
+                    "404": {
+                        "description": "Ticket not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Ticket": {
+                "title": "Ticket",
+                "description": "Ticket model"
+            }
         }
     },
     "tags": [
+        {
+            "name": "Tickets",
+            "description": "API Endpoints for Ticket Management"
+        },
         {
             "name": "Authentication",
             "description": "Authentication"

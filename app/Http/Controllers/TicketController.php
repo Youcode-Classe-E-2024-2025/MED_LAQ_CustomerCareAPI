@@ -6,6 +6,12 @@ use App\Models\Ticket;
 use App\Services\TicketService;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Tickets",
+ *     description="API Endpoints for Ticket Management"
+ * )
+ */
 class TicketController extends Controller
 {
     protected $TicketService;
@@ -15,18 +21,50 @@ class TicketController extends Controller
         $this->TicketService = $TicketService;
     }
 
-
     /**
-     * Display a listing of the resource.
+     * Display a listing of the tickets.
+     * 
+     * @OA\Get(
+     *     path="/api/tickets",
+     *     summary="Get all tickets",
+     *     tags={"Tickets"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all tickets",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Ticket")
+     *         )
+     *     )
+     * )
      */
+    
     public function index()
     {
         return $this->TicketService->all();
-
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created ticket in storage.
+     * 
+     * @OA\Post(
+     *     path="/api/tickets",
+     *     summary="Create a new ticket",
+     *     tags={"Tickets"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Ticket created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -34,7 +72,29 @@ class TicketController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified ticket.
+     * 
+     * @OA\Get(
+     *     path="/api/tickets/{id}",
+     *     summary="Get a ticket by ID",
+     *     tags={"Tickets"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Ticket ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ticket details",
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ticket not found"
+     *     )
+     * )
      */
     public function show(Ticket $ticket)
     {
@@ -42,7 +102,37 @@ class TicketController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified ticket in storage.
+     * 
+     * @OA\Put(
+     *     path="/api/tickets/{id}",
+     *     summary="Update an existing ticket",
+     *     tags={"Tickets"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Ticket ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ticket updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ticket not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     )
+     * )
      */
     public function update(Request $request, Ticket $ticket)
     {
@@ -50,7 +140,28 @@ class TicketController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified ticket from storage.
+     * 
+     * @OA\Delete(
+     *     path="/api/tickets/{id}",
+     *     summary="Delete a ticket",
+     *     tags={"Tickets"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Ticket ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ticket deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ticket not found"
+     *     )
+     * )
      */
     public function destroy(Ticket $ticket)
     {

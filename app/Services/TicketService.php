@@ -76,7 +76,7 @@ class TicketService
     {
         $validator = Validator::make($data, [
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'content' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -85,7 +85,7 @@ class TicketService
 
         $ticket = $this->ticketRepository->update($id, [
             'title' => $data['title'],
-            'description' => $data['description'],
+            'content' => $data['content'],
         ]);
 
         return $ticket;
