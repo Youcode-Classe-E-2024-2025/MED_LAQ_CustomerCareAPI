@@ -7,6 +7,16 @@ use App\Models\Ticket;
 
 class TicketRepository
 {
+
+    /**
+     * Get all tickets
+     * 
+     * @return Ticket[]
+     */
+    public function all(): array
+    {
+        return Ticket::all()->toArray();
+    }
     /**
      * Create a new ticket
      * 
