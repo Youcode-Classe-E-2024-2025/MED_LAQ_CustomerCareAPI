@@ -96,4 +96,15 @@ class TicketService
     {
         return $this->ticketRepository->delete($id);
     }
+
+    /**
+     * Find ticket
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function find(int $id)
+    {
+        return $this->ticketRepository->find($id);
+    }
 }

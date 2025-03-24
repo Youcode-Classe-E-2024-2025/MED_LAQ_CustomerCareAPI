@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Services\TicketService;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
+    protected $TicketService;
+
+    public function __construct(TicketService $TicketService)
+    {
+        $this->TicketService = $TicketService;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->TicketService->all();
+
     }
 
     /**
@@ -20,7 +30,7 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $this->TicketService->create($request->all());
     }
 
     /**
@@ -28,7 +38,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        return $this->TicketService->find($ticket->id);
     }
 
     /**
@@ -36,7 +46,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        //
+        return $this->TicketService->update($ticket->id, $request->all());
     }
 
     /**
@@ -44,6 +54,6 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        return $this->TicketService->delete($ticket->id);
     }
 }
