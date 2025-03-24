@@ -17,7 +17,6 @@ class Ticket extends Model
         'closed_at',
         'reopened_at',
         'resolved_at',
-        'deleted_at',
     ];
 
     protected $casts = [

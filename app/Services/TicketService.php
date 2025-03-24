@@ -7,6 +7,7 @@ use App\Repositories\TicketRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -44,7 +45,7 @@ class TicketService
     {
         $validator = Validator::make($data, [
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'content' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -53,7 +54,11 @@ class TicketService
 
         $ticket = $this->ticketRepository->create([
             'title' => $data['title'],
-            'description' => $data['description'],
+            'content' => $data['content'],
+            'user_id' => Auth::id(),
+            'closed_at' => null,
+            'reopened_at' => null,
+            'resolved_at' => null,
         ]);
 
         return $ticket;
