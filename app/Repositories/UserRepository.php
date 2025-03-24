@@ -56,4 +56,5 @@ class UserRepository
         
         return $user->update($data);
     }
+    
 }

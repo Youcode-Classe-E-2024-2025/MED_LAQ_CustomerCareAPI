@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
     protected $userRepository;
-
+    
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
-
     /**
      * Register a new user
      * 
@@ -85,25 +85,23 @@ class AuthService
     }
 
     /**
-     * Logout a user
-     * 
-     * @param int $userId
-     * @return bool
-     */
-    public function logout(int $userId)
-    {
-        $user = $this->userRepository->find($userId);
-        
-        if (!$user) {
-            return false;
-        }
-        
-        // Revoke all tokens
-        $user->tokens()->delete();
-        
-        return true;
+ * Logout a user
+ * 
+ * @param int|User $user
+ * @return bool
+ */
+public function logout($user)
+{
+    if ($user instanceof User) {
+        return $user->tokens()->delete();
     }
-
+    
+    $user = $this->userRepository->find($user);
+    if (!$user) {
+        return false;
+    }
+    return $user->tokens()->delete();
+}
     /**
      * Get authenticated user
      * 
@@ -114,4 +112,5 @@ class AuthService
     {
         return $this->userRepository->find($userId);
     }
+    
 }
