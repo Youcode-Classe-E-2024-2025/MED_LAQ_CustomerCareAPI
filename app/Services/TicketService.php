@@ -45,7 +45,7 @@ class TicketService
     {
         $validator = Validator::make($data, [
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -56,9 +56,6 @@ class TicketService
             'title' => $data['title'],
             'content' => $data['content'],
             'user_id' => Auth::id(),
-            'closed_at' => null,
-            'reopened_at' => null,
-            'resolved_at' => null,
         ]);
 
         return $ticket;

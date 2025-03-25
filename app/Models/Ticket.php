@@ -22,7 +22,7 @@ class Ticket extends Model
         'user_id',
         'agent_id',
         'title',
-        'description',
+        'content',
         'status',
         'resolved_at',
         'cancelled_at',
