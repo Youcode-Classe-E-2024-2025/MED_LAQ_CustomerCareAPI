@@ -31,7 +31,12 @@ class TicketService
      */
     public function all()
     {
-        return $this->ticketRepository->all();
+        if (Auth::user()->role === 'admin') {
+            return $this->ticketRepository->all();
+        }
+        else {
+            return $this->ticketRepository->allByUser(Auth::id());
+        }
     }
 
     /**

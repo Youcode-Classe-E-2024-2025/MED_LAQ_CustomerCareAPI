@@ -73,5 +73,11 @@ class TicketRepository
         
         return $ticket->delete();
     }
+
+
+    public function allByUser(int $userId): array
+    {
+        return Ticket::where('user_id', $userId)->get()->toArray();
+    }
     
 }
