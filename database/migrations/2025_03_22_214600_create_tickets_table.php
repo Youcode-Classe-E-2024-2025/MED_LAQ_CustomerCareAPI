@@ -16,7 +16,7 @@ return new class extends Migration
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
         $table->foreignId('agent_id')->nullable()->constrained('users')->onDelete('set null');
         $table->string('title');
-        $table->text('description');
+        $table->text('content');
         $table->enum('status', ['open', 'in_progress', 'resolved', 'cancelled', 'closed'])->default('open');
         $table->timestamp('resolved_at')->nullable();
         $table->timestamp('cancelled_at')->nullable();

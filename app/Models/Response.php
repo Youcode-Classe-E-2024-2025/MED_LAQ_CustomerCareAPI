@@ -2,34 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Response extends Model
 {
-    /** @use HasFactory<\Database\Factories\ResponseFactory> */
-    use HasFactory;
-    
     protected $fillable = [
-        'content',
         'ticket_id',
         'user_id',
-        'deleted_at',
-        'created_at',
-        'updated_at',
-        'edited_at',
-        'edited_by',
-        'deleted_at',
-        "softDeletes",
+        'content',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'edited_at' => 'datetime',
-        'deleted_at' => 'datetime',
-        'softDeletes' => 'datetime',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function ticket()
     {
