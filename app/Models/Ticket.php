@@ -19,12 +19,13 @@ class Ticket extends Model
      */
 
     protected $fillable = [
-        'title',
-        'content',
         'user_id',
-        'closed_at',
-        'reopened_at',
+        'agent_id',
+        'title',
+        'description',
+        'status',
         'resolved_at',
+        'cancelled_at',
     ];
 
     protected $casts = [

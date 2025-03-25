@@ -1,28 +1,33 @@
 <?php
 
-namespace Database\Factories;
+namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ticket>
- */
-class TicketFactory extends Factory
+class Ticket extends Model
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $fillable = [
+        'user_id',
+        'agent_id',
+        'title',
+        'description',
+        'status',
+        'resolved_at',
+        'cancelled_at'
+    ];
+
+    public function user()
     {
-        return [
-            'title' => $this->faker->sentence,
-            'content' => $this->faker->paragraph,
-            'user_id' => \App\Models\User::factory(),
-            'closed_at' => now(),
-            'reopened_at' => now(),
-            'resolved_at' => now(),
-        ];
+        return $this->belongsTo(User::class);
+    }
+
+    public function agent()
+    {
+        return $this->belongsTo(User::class, 'agent_id');
+    }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
     }
 }
