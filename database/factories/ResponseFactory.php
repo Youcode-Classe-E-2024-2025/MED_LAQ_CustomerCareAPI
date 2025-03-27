@@ -22,6 +22,8 @@ class ResponseFactory extends Factory
             'user_id' => \App\Models\User::factory(),
             'edited_at' => now(),
             'edited_by' => \App\Models\User::factory(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

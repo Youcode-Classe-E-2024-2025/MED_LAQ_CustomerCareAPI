@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Response;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,9 +23,8 @@ class DatabaseSeeder extends Seeder
         ->create();
     
     // Create 10 responses, each associated with a random ticket and user
-    Response::factory(10)
-        ->recycle($users)
-        ->recycle($tickets)
+    $Response = Response::factory(10)
+        ->recycle($tickets, $users)
         ->create();
 }
 }

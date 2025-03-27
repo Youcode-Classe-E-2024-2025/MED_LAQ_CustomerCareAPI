@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Response extends Model
+
 {
+    use HasFactory;
     protected $fillable = [
         'ticket_id',
         'user_id',
@@ -22,5 +25,15 @@ class Response extends Model
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    public function editedBy()
+    {
+        return $this->belongsTo(User::class, 'edited_by');
+    }
+
+    public function scopeForTicket($query, $ticketId)
+    {
+        return $query->where('ticket_id', $ticketId);
     }
 }

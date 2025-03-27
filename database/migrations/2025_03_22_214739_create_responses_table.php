@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('content');
+            $table->timestamp('edited_at');
+            $table->foreignId('edited_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
