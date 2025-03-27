@@ -105,7 +105,7 @@ class ResponseService
 
         $data = ['content' => $data['content'] ?? $response->content];
 
-        return $this->responseRepository->updateResponse($id, $data);
+        return $this->responseRepository->update($id, $data);
     }
 
     public function delete($id)
@@ -120,7 +120,7 @@ class ResponseService
             return false;
         }
 
-        return $this->responseRepository->deleteResponse($id);
+        return $this->responseRepository->delete($id);
     }
 
     public function all()
