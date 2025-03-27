@@ -30,6 +30,18 @@ class UserRepository
 
 
     /**
+     * Find user by email
+     * 
+     * @param string $email
+     * @return User|null
+     */
+
+    public function findByEmail(string $email): ?User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    /**
      * Update user
      * 
      * @param int $id
