@@ -28,7 +28,7 @@ class TicketService
      */
     public function all()
     {
-        if (Auth::user()->role === 'admin') {
+        if (Auth::user()->role === 'agent') {
             return $this->ticketRepository->all();
         }
         else {
@@ -111,4 +111,29 @@ class TicketService
     {
         return $this->ticketRepository->find($id);
     }
+
+
+    
+    public function changeStatus($id, $status)
+    {
+        $ticket = $this->find($id);
+
+        if ($ticket) {
+            $ticket->status = $status;
+
+            if ($status === 'resolved') {
+                $ticket->resolved_at = now();
+            } else if ($status === 'cancelled') {
+                $ticket->cancelled_at = now();
+            }
+
+            $ticket->save();
+
+            return $ticket;
+        }
+
+        return null;
+    }
+
+    
 }

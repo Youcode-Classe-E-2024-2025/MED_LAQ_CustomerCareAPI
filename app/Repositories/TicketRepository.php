@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 use App\Models\Ticket;
+use PhpParser\Node\Stmt\Function_;
 
 class TicketRepository
 {
@@ -78,6 +79,18 @@ class TicketRepository
     public function allByUser(int $userId): array
     {
         return Ticket::where('user_id', $userId)->get()->toArray();
+    }
+
+
+    public Function changeStatus(int $id, string $status): bool
+    {
+        $ticket = $this->find($id);
+        
+        if (!$ticket) {
+            return false;
+        }
+        
+        return $ticket->update(['status' => $status]);
     }
     
 }

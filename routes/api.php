@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ResponseController;
-use App\Models\Response;
 use Illuminate\Support\Facades\Route;
 
 

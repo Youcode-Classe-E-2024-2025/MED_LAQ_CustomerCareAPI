@@ -28,16 +28,6 @@ class UserRepository
         return User::find($id);
     }
 
-    /**
-     * Find user by email
-     * 
-     * @param string $email
-     * @return User|null
-     */
-    public function findByEmail(string $email): ?User
-    {
-        return User::where('email', $email)->first();
-    }
 
     /**
      * Update user
@@ -55,6 +45,20 @@ class UserRepository
         }
         
         return $user->update($data);
+    }
+
+    public function isAgent($id)
+    {
+        $user = $this->find($id);
+
+        return $user ? $user->isAgent() : false;
+    }
+
+    public function isClient($id)
+    {
+        $user = $this->find($id);
+
+        return $user ? $user->isClient() : false;
     }
     
 }

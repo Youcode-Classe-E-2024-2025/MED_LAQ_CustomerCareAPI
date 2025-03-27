@@ -102,4 +102,9 @@ class ResponseRepository
         return Response::where('ticket_id', $ticketId)->get()->toArray();
     }
 
+    public function getResponseByUserId(int $userId): array
+    {
+        return Response::where('user_id', $userId)->get()->toArray();
+    }
+
 }
