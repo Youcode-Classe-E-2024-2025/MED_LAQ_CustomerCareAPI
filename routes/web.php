@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/Login', function () {
     return inertia('Login');
+});
+
+Route::get('/register', function () {
+    return inertia('register');
 });
