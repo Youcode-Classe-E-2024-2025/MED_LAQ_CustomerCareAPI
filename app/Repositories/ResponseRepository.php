@@ -97,4 +97,9 @@ class ResponseRepository
     }
 
 
+    public function getTicketResponses(int $ticketId): array
+    {
+        return Response::where('ticket_id', $ticketId)->get()->toArray();
+    }
+
 }

@@ -2,48 +2,109 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Response;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
-
 class ResponseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $responseService;
+
+    public function __construct(ResponseService $responseService)
     {
-        //
+        $this->responseService = $responseService;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function index($id)
     {
-        //
+        try {
+            $responses = $this->responseService->getTicketResponses($id);
+
+            return response()->json([
+                'responses' => $responses,
+            ], 200);
+        } catch (\Exception $e) {
+            [
+                'ticket_id' => $id,
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ];
+
+            return response()->json([
+                'message' => 'An error occurred while retrieving responses',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Response $response)
+    public function store(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'content' => 'required|string'
+        ]);
+
+        $validated['ticket_id'] = $id;
+
+        $response = $this->responseService->create($validated);
+
+        if (!$response) {
+            return response()->json([
+                'message' => "you can't add response to this ticket"
+            ], 403);
+        }
+
+        return response()->json([
+            'response' => $response,
+            'message' => 'response created'
+        ], 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Response $response)
+    
+    public function show(string $id)
     {
-        //
+        $response = $this->responseService->find($id);
+
+        if (!$response) {
+            return response()->json([
+                'message' => 'not fount',
+            ], 404);
+        }
+
+        return response()->json([
+            'response' => $response
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Response $response)
+    
+    public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate(['content' => 'required|string']);
+
+        $response = $this->responseService->update($id, $validated);
+
+        if (!$response) {
+            return response()->json([
+                'message' => 'not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'response' => $response,
+            'message' => 'response updated'
+        ], 201);
+    }
+
+    public function destroy(string $id)
+    {
+        $result = $this->responseService->delete($id);
+
+        if (!$result) {
+            return response()->json([
+                'message' => 'not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'response deleted',
+        ], 200);
     }
 }

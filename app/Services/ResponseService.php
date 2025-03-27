@@ -77,4 +77,10 @@ class ResponseService
     {
         return $this->responseRepository->delete($id);
     }
+
+
+    public function getTicketResponses(int $ticketId)
+    {
+        return $this->responseRepository->getTicketResponses($ticketId);
+    }
 }
