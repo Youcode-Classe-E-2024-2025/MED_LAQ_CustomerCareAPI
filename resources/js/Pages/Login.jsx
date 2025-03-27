@@ -36,6 +36,10 @@ export default function Login() {
                             </button>
                         </div>
                     </form>
+
+                    <div className="mt-4 text-sm text-center">
+                        <a href="/Register" className="font-medium text-indigo-600 hover:text-indigo-500">Register</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -59,6 +59,9 @@ export default function Register() {
                         </button>
                     </div>
                 </form>
+                <div className="mt-4 text-sm text-center">
+                        <a href="/Login" className="font-medium text-indigo-600 hover:text-indigo-500">Login</a>
+                </div>
             </div>
         </div>
     );

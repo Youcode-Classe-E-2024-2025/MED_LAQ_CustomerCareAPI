@@ -6,6 +6,6 @@ Route::get('/Login', function () {
     return inertia('Login');
 });
 
-Route::get('/register', function () {
-    return inertia('register');
+Route::get('/Register', function () {
+    return inertia('Register');
 });
