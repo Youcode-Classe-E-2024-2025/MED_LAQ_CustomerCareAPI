@@ -13,28 +13,21 @@ class ResponseController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function index($id)
-    {
-        try {
-            $responses = $this->responseService->getTicketResponses($id);
+    public function index()
+{
+    try {
+        $responses = $this->responseService->all();
 
-            return response()->json([
-                'responses' => $responses,
-            ], 200);
-        } catch (\Exception $e) {
-            [
-                'ticket_id' => $id,
-                'error' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ];
-
-            return response()->json([
-                'message' => 'An error occurred while retrieving responses',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'responses' => $responses,
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'An error occurred while retrieving responses',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function store(Request $request, $id)
     {
@@ -106,5 +99,10 @@ class ResponseController extends Controller
         return response()->json([
             'message' => 'response deleted',
         ], 200);
+    }
+
+    public function getTicketResponses(int $ticketId)
+    {
+        return $this->responseService->getTicketResponses($ticketId);
     }
 }
