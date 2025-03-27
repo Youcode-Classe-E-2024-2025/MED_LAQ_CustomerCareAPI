@@ -10,6 +10,8 @@ class Response extends Model
         'ticket_id',
         'user_id',
         'content',
+        'edited_at',
+        'edited_by',
     ];
 
     public function user()
