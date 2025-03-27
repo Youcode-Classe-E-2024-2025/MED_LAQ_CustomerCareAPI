@@ -4,6 +4,9 @@
 namespace App\Repositories;
 
 use App\Models\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
 
 class ResponseRepository
 {
@@ -17,16 +20,31 @@ class ResponseRepository
     {
         return Response::all()->toArray();
     }
+
     /**
      * Create a new response
      * 
      * @param array $data
      * @return Response
      */
+
     public function create(array $data): Response
     {
+        $validator = Validator::make($data, [
+            'content' => 'required|string',
+            'ticket_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'edited_at' => 'required|date',
+            'edited_by' => 'required|integer',
+
+        ]);
+    
+        if ($validator->fails()) {
+            throw new ValidationException($validator->errors());
+        }
         return Response::create($data);
     }
+
 
     /**
      * Find response by ID
@@ -54,8 +72,10 @@ class ResponseRepository
             return false;
         }
         
-        return $response->update($data);
+        $response = $response->update($data);
+        return $response;
     }
+
 
     /**
      * Delete response
@@ -63,6 +83,8 @@ class ResponseRepository
      * @param int $id
      * @return bool
      */
+
+
     public function delete(int $id): bool
     {
         $response = $this->find($id);
@@ -73,4 +95,6 @@ class ResponseRepository
         
         return $response->delete();
     }
+
+
 }

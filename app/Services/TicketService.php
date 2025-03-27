@@ -4,10 +4,7 @@ namespace App\Services;
 
 
 use App\Repositories\TicketRepository;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use DateTime;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
