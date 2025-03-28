@@ -1,11 +1,25 @@
+import { useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
+
 export default function Login() {
+
+    const { data, setData, post, processing, errors } = useForm({
+        email: '',
+        password: '',
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post('/login');
+    };
+
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
             <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
                 <h1 className="text-2xl font-bold text-center text-gray-800">Login</h1>
                 <div>
-                    <form method="POST" action="/login" className="space-y-6">
-                    {/* CSRF token field if using Laravel */}
+                    <form onSubmit={handleSubmit} className="space-y-6">
                     <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')} />
 
                         <div className="space-y-2">
@@ -14,6 +28,8 @@ export default function Login() {
                                 id="email"
                                 type="email"
                                 name="email"
+                                value={data.email}
+                                onChange={e => setData('email', e.target.value)}
                                 required
                                 autoFocus
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -25,6 +41,8 @@ export default function Login() {
                                 id="password"
                                 type="password"
                                 name="password"
+                                value={data.password}
+                                onChange={e => setData('password', e.target.value)}
                                 required
                                 autoComplete="current-password"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -46,5 +64,6 @@ export default function Login() {
                 </div>
             </div>
         </div>
-    );
+    )
+
 }
