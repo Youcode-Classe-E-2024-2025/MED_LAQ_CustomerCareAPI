@@ -14,3 +14,8 @@ Route::get('/Register', function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/dashboard', function () {
+    return inertia('Dashboard');
+})->middleware(['auth'])->name('dashboard');
+
