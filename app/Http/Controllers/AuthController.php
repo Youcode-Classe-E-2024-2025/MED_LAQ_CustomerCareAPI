@@ -24,10 +24,10 @@ class AuthController extends Controller
 
     /**
      * Register a new user
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
-     * 
+     *
      * @OA\Post(
      *     path="/api/register",
      *     summary="Register a new user",
@@ -65,7 +65,7 @@ class AuthController extends Controller
     {
         try {
             $result = $this->authService->register($request->all());
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'User registered successfully',
@@ -81,10 +81,10 @@ class AuthController extends Controller
 
     /**
      * Login user
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
-     * 
+     *
      * @OA\Post(
      *     path="/api/login",
      *     summary="Authenticate user and generate token",
@@ -104,7 +104,7 @@ class AuthController extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="User logged in successfully"),
      *             @OA\Property(
-     *                 property="data", 
+     *                 property="data",
      *                 type="object",
      *                 @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."),
      *                 @OA\Property(property="user", type="object")
@@ -125,7 +125,7 @@ class AuthController extends Controller
     {
         try {
             $result = $this->authService->login($request->all());
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'User logged in successfully',
@@ -141,10 +141,10 @@ class AuthController extends Controller
 
     /**
      * Logout user
-     * 
+     *
      * @param Request $request
      * @return JsonResponse
-     * 
+     *
      * @OA\Post(
      *     path="/api/logout",
      *     summary="Logout user and invalidate token",
@@ -172,7 +172,7 @@ class AuthController extends Controller
     {
         try {
             $this->authService->logout($request->user());
-            
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'User logged out successfully'
