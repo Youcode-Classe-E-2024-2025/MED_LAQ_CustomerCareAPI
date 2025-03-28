@@ -5,6 +5,9 @@ export default function Login() {
                 <h1 className="text-2xl font-bold text-center text-gray-800">Login</h1>
                 <div>
                     <form method="POST" action="/login" className="space-y-6">
+                    {/* CSRF token field if using Laravel */}
+                    <input type="hidden" name="_token" value={document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')} />
+
                         <div className="space-y-2">
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                             <input
