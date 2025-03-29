@@ -1,5 +1,4 @@
 import { useForm } from '@inertiajs/react';
-import { Head } from '@inertiajs/react';
 
 export default function Login() {
 

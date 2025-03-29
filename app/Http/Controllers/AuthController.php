@@ -184,4 +184,53 @@ class AuthController extends Controller
             ], $e->getCode() ?: 400);
         }
     }
+
+
+    /**
+     * Refresh token
+     *
+     * @param Request $request
+     * @return JsonResponse
+     *
+     * @OA\Post(
+     *     path="/api/refresh-token",
+     *     summary="Refresh authentication token",
+     *     tags={"Authentication"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token refreshed successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Token refreshed successfully"),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="Unauthenticated")
+     *         )
+     *     )
+     * )
+     */
+    public function refreshToken(Request $request): JsonResponse
+    {
+        try {
+            $result = $this->authService->refreshToken($request->user());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Token refreshed successfully',
+                'data' => $result
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getCode() ?: 400);
+        }
+}
 }

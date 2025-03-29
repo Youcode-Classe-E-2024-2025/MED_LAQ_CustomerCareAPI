@@ -12,14 +12,14 @@ use Illuminate\Validation\ValidationException;
 class AuthService
 {
     protected $userRepository;
-    
+
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
     /**
      * Register a new user
-     * 
+     *
      * @param array $data
      * @return array
      * @throws ValidationException
@@ -53,7 +53,7 @@ class AuthService
 
     /**
      * Login a user
-     * 
+     *
      * @param array $credentials
      * @return array
      * @throws \Exception
@@ -85,7 +85,7 @@ class AuthService
 
     /**
  * Logout a user
- * 
+ *
  * @param int|User $user
  * @return bool
  */
@@ -94,7 +94,7 @@ public function logout($user)
     if ($user instanceof User) {
         return $user->tokens()->delete();
     }
-    
+
     $user = $this->userRepository->find($user);
     if (!$user) {
         return false;
@@ -103,7 +103,7 @@ public function logout($user)
 }
     /**
      * Get authenticated user
-     * 
+     *
      * @param int $userId
      * @return User|null
      */
@@ -111,5 +111,17 @@ public function logout($user)
     {
         return $this->userRepository->find($userId);
     }
-    
+
+    /**
+     * Refresh the authentication token
+     *
+     * @param User $user
+     * @return string
+     */
+
+    public function refreshToken($user)
+    {
+        $user->tokens()->delete();
+        return $user->createToken('auth_token')->plainTextToken;
+    }
 }
