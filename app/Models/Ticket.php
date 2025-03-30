@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 class Ticket extends Model
 {
+    /*
+        * @OA\Schema(
+        *     schema="Ticket",
+        *     type="object",
+        *     title="Ticket",
+    */
     use HasFactory, HasApiTokens;
 
      protected $fillable = ['client_id', 'title', 'description', 'status'];

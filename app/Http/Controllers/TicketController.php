@@ -40,7 +40,7 @@ class TicketController extends Controller
      *     @OA\Response(
      *         response=201,
      *         description="Ticket created successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *         @OA\JsonContent(ref="Models/Ticket")
      *     ),
      * )
      */
@@ -67,7 +67,10 @@ class TicketController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="List of tickets",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Ticket"))
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="/models/Ticket")
+     *         )
      *     ),
      * )
      */
@@ -94,7 +97,7 @@ class TicketController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Ticket details",
-     *         @OA\JsonContent(ref="#/components/schemas/Ticket")
+     *         @OA\JsonContent(ref="models/Ticket")
      *     ),
      * )
      */
@@ -163,7 +166,7 @@ class TicketController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="List of tickets for the client",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Ticket"))
+     *         @OA\JsonContent(type="array", @OA\Items(ref="models/Ticket"))
      *     ),
      * )
      */

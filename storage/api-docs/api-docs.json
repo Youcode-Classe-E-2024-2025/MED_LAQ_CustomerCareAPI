@@ -245,23 +245,228 @@
                 ]
             }
         },
+        "/api/refresh-token": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh authentication token",
+                "description": "Refresh token",
+                "operationId": "833684aa6f123680767976945e7c783c",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token refreshed successfully"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/tickets/{ticketId}/responses": {
+            "get": {
+                "tags": [
+                    "Responses"
+                ],
+                "summary": "Get all responses for a ticket",
+                "description": "Retrieve all responses for a specific ticket",
+                "operationId": "getResponses",
+                "parameters": [
+                    {
+                        "name": "ticketId",
+                        "in": "path",
+                        "description": "ID of the ticket",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of responses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No responses found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No responses found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Responses"
+                ],
+                "summary": "Create a new response for a ticket",
+                "description": "Create a new response for a specific ticket",
+                "operationId": "createResponse",
+                "parameters": [
+                    {
+                        "name": "ticketId",
+                        "in": "path",
+                        "description": "ID of the ticket",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message"
+                                ],
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "This is a response message"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Response created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Response created successfully and ticket closed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tickets": {
             "get": {
                 "tags": [
                     "Tickets"
                 ],
                 "summary": "Get all tickets",
-                "description": "Display a listing of the tickets.",
-                "operationId": "0082053c3590628e674a11ec0d1466e6",
+                "description": "Get all tickets",
+                "operationId": "getAllTickets",
                 "responses": {
                     "200": {
-                        "description": "List of all tickets",
+                        "description": "List of tickets",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Ticket"
+                                        "$ref": "/models/Ticket"
                                     }
                                 }
                             }
@@ -274,14 +479,34 @@
                     "Tickets"
                 ],
                 "summary": "Create a new ticket",
-                "description": "Store a newly created ticket in storage.",
-                "operationId": "93882881cca9046d8c6ddbbab7309b4b",
+                "description": "Create a new ticket",
+                "operationId": "createTicket",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Ticket"
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "open",
+                                            "closed"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -292,30 +517,27 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Ticket"
+                                    "$ref": "Models/Ticket"
                                 }
                             }
                         }
-                    },
-                    "422": {
-                        "description": "Validation error"
                     }
                 }
             }
         },
-        "/api/tickets/{id}": {
+        "/api/tickets/{ticket}": {
             "get": {
                 "tags": [
                     "Tickets"
                 ],
                 "summary": "Get a ticket by ID",
-                "description": "Display the specified ticket.",
-                "operationId": "62091a82e5103c19191c4c1ebd30ec6f",
+                "description": "Get a ticket by ID",
+                "operationId": "getTicketById",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "ticket",
                         "in": "path",
-                        "description": "Ticket ID",
+                        "description": "ID of the ticket",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -328,28 +550,51 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Ticket"
+                                    "$ref": "models/Ticket"
                                 }
                             }
                         }
-                    },
-                    "404": {
-                        "description": "Ticket not found"
                     }
                 }
             },
+            "delete": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Delete a ticket",
+                "description": "Delete a ticket",
+                "operationId": "deleteTicket",
+                "parameters": [
+                    {
+                        "name": "ticket",
+                        "in": "path",
+                        "description": "ID of the ticket",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/tickets/{ticket}/status": {
             "put": {
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Update an existing ticket",
-                "description": "Update the specified ticket in storage.",
-                "operationId": "1010dcd7a1f352766df66431f1df4745",
+                "summary": "Update ticket status",
+                "description": "Update ticket status",
+                "operationId": "updateTicketStatus",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "ticket",
                         "in": "path",
-                        "description": "Ticket ID",
+                        "description": "ID of the ticket",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -361,42 +606,43 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Ticket"
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "open",
+                                            "closed"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Ticket updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Ticket"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Ticket not found"
-                    },
-                    "422": {
-                        "description": "Validation error"
+                        "description": "Ticket status updated successfully"
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/api/tickets/client/{clientId}": {
+            "get": {
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Delete a ticket",
-                "description": "Remove the specified ticket from storage.",
-                "operationId": "c37b65ae6ff3ffa8c9e0c14ea4d6a9f7",
+                "summary": "Get tickets for a specific client",
+                "description": "Get tickets for a specific client",
+                "operationId": "getClientTickets",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "clientId",
                         "in": "path",
-                        "description": "Ticket ID",
+                        "description": "ID of the client",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -405,24 +651,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Ticket deleted successfully"
-                    },
-                    "404": {
-                        "description": "Ticket not found"
+                        "description": "List of tickets for the client",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "models/Ticket"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     },
-    "components": {
-        "schemas": {
-            "Ticket": {
-                "title": "Ticket",
-                "description": "Ticket model"
-            }
-        }
-    },
     "tags": [
+        {
+            "name": "Responses",
+            "description": "API Endpoints for managing responses"
+        },
         {
             "name": "Tickets",
             "description": "API Endpoints for Ticket Management"
