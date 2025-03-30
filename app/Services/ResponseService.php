@@ -20,4 +20,41 @@ class ResponseService
         $this->userRepository = $userRepository;
     }
 
+    public function createResponse($data)
+    {
+        $data['user_id'] = Auth::id();
+        return $this->responseRepository->createResponse($data);
+    }
+
+    public function getAllResponses($ticketId)
+    {
+        return $this->responseRepository->getAllResponses($ticketId);
+    }
+
+    public function getResponseById($id)
+    {
+        return $this->responseRepository->getResponseById($id);
+    }
+    public function updateResponse($id, $data)
+    {
+        return $this->responseRepository->updateResponse($id, $data);
+    }
+    public function deleteResponse($id)
+    {
+        return $this->responseRepository->deleteResponse($id);
+    }
+
+    public function getResponsesByTicketId($ticketId)
+    {
+        return $this->responseRepository->getResponsesByTicketId($ticketId);
+    }
+    public function getResponsesByUserId($userId)
+    {
+        return $this->responseRepository->getResponsesByUserId($userId);
+    }
+
+    public function getResponsesByStatus($ticketId, $status)
+    {
+        return $this->responseRepository->getResponsesByStatus($ticketId, $status);
+    }
 }
