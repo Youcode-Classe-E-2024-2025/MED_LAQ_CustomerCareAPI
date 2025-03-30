@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\hasRole;
 
 class User extends Authenticatable
 {
@@ -45,15 +46,10 @@ class User extends Authenticatable
         return $this->hasMany(Response::class);
     }
 
-    public function isAgent()
-    {
-        return $this->role === 'agent';
-    }
+    public function hasRole($role)
+{
+    return $this->role === $role;
+}
 
-    public function isClient()
-    {
-        return $this->role === 'client';
-    }
 
-    
 }

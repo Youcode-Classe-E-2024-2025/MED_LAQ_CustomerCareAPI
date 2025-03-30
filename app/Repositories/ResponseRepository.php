@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 
 class ResponseRepository
 {
@@ -19,27 +20,30 @@ class ResponseRepository
     }
 
     public function store(Request $request, Ticket $ticket)
-    {
-        $validator = Validator::make($request->all(), [
-            'message' => 'required|string|max:255',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'message' => 'required|string|max:255',
+    ]);
 
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-
-        $response = new Response();
-        $response->message = $request->message;
-        $response->ticket_id = $ticket->id;
-        $response->user_id = $ticket->user_id;
-
-        if ($response->save()) {
-            return response()->json(['message' => 'Response created successfully'], 201);
-        }
-
-        return response()->json(['message' => 'Failed to create response'], 500);
+    if ($validator->fails()) {
+        throw new ValidationException($validator);
     }
 
+    $response = new Response();
+    $response->message = $request->message;
+    $response->ticket_id = $ticket->id;
+    $response->agent_id = Auth::id();
+
+    if ($response->save()) {
+        // Update the ticket status to "closed"
+        $ticket->status = 'closed';
+        $ticket->save();
+
+        return response()->json(['message' => 'Response created successfully and ticket closed'], 201);
+    }
+
+    return response()->json(['message' => 'Failed to create response'], 500);
+}
     public function index($ticketId)
     {
         $responses = $this->response->where('ticket_id', $ticketId)->get();

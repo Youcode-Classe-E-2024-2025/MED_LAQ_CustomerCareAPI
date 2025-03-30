@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
+
 class ResponseController extends Controller
 {
     protected $responseService;
@@ -13,10 +14,11 @@ class ResponseController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function store($request, $ticketId)
+    public function store(Request $request, $ticketId)
     {
         return $this->responseService->store($request, $ticketId);
     }
+
     public function index($ticketId)
     {
         return $this->responseService->index($ticketId);

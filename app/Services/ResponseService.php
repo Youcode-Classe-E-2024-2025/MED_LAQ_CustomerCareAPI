@@ -20,23 +20,28 @@ class ResponseService
         $this->userRepository = $userRepository;
     }
 
-    public function store($request, $ticket)
-    {
-        $user = Auth::user();
+    public function store($request, $ticketId)
+{
+    $user = Auth::user();
+    $ticket = $this->ticketRepository->find($ticketId);
 
-        if ($user->id !== $ticket->user_id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        return $this->responseRepository->store($request, $ticket);
+    if (!$ticket) {
+        return response()->json(['message' => 'Ticket not found'], 404);
     }
+
+    if ($ticket->client_id !== $user->id && !$user->hasRole('agent')) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    return $this->responseRepository->store($request, $ticket);
+}
     public function index($ticketId)
     {
         $ticket = $this->ticketRepository->find($ticketId);
 
         if (!$ticket) {
             return response()->json(['message' => 'Ticket not found'], 404);
-        }
+        }// Assuming you have a 'role' column in your users table
 
         return $this->responseRepository->index($ticketId);
     }
