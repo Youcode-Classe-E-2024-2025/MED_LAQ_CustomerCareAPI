@@ -17,7 +17,7 @@ export default function Register() {
         setProcessing(true);
         try {
             await axios.post('/register', data);
-            window.location.href = '/dashboard'; // Redirect on success
+            window.location.href = '/Tickets';
         } catch (error) {
             if (error.response && error.response.data.errors) {
                 setErrors(error.response.data.errors);

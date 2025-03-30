@@ -10,8 +10,14 @@ export default function Login() {
         e.preventDefault();
         setProcessing(true);
         try {
-            await axios.post('/login', data);
-            window.location.href = '/dashboard'; // Redirect on success
+            const response = await axios.post('/login', data);
+            if (response.data && response.data.user) {
+                if (response.data.user.role === 'agent') {
+                    window.location.href = '/response';
+                } else {
+                    window.location.href = '/tickets';
+                }
+            }
         } catch (error) {
             if (error.response && error.response.data.errors) {
                 setErrors(error.response.data.errors);
