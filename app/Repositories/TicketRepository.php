@@ -47,4 +47,9 @@ class TicketRepository
         return $ticket->delete();
     }
 
+
+    public function find($ticketId)
+{
+    return $this->ticket->find($ticketId);
+}
 }

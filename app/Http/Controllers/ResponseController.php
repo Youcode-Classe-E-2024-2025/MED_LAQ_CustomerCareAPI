@@ -13,61 +13,12 @@ class ResponseController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function createResponse(Request $request)
+    public function store($request, $ticketId)
     {
-        $data = $request->validate([
-            'ticket_id' => 'required|exists:tickets,id',
-            'content' => 'required|string',
-        ]);
-
-        $response = $this->responseService->createResponse($data);
-
-        return response()->json($response, 201);
+        return $this->responseService->store($request, $ticketId);
     }
-    public function getAllResponses($ticketId)
+    public function index($ticketId)
     {
-        $responses = $this->responseService->getAllResponses($ticketId);
-
-        return response()->json($responses);
-    }
-    public function getResponseById($id)
-    {
-        $response = $this->responseService->getResponseById($id);
-
-        return response()->json($response);
-    }
-    public function updateResponse(Request $request, $id)
-    {
-        $data = $request->validate([
-            'content' => 'required|string',
-        ]);
-
-        $response = $this->responseService->updateResponse($id, $data);
-
-        return response()->json($response);
-    }
-    public function deleteResponse($id)
-    {
-        $response = $this->responseService->deleteResponse($id);
-
-        return response()->json(['message' => 'Response deleted successfully']);
-    }
-    public function getResponsesByTicketId($ticketId)
-    {
-        $responses = $this->responseService->getResponsesByTicketId($ticketId);
-
-        return response()->json($responses);
-    }
-    public function getResponsesByUserId($userId)
-    {
-        $responses = $this->responseService->getResponsesByUserId($userId);
-
-        return response()->json($responses);
-    }
-    public function getResponsesByStatus($ticketId, $status)
-    {
-        $responses = $this->responseService->getResponsesByStatus($ticketId, $status);
-
-        return response()->json($responses);
+        return $this->responseService->index($ticketId);
     }
 }
