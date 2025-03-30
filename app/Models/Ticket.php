@@ -4,40 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 class Ticket extends Model
 {
-    /** @use HasFactory<\Database\Factories\TicketFactory> */
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
-    /**
-     * @OA\Schema(
-     *     schema="Ticket",
-     *     title="Ticket",
-     *     description="Ticket model",
-     * )
-     */
+     protected $fillable = ['client_id', 'title', 'description', 'status'];
 
-    protected $fillable = [
-        'user_id',
-        'agent_id',
-        'title',
-        'content',
-        'status',
-        'resolved_at',
-        'cancelled_at',
-    ];
+     public function responses(): HasMany
+     {
+         return $this->hasMany(Response::class);
+     }
 
-    protected $casts = [
-        'closed_at' => 'datetime',
-        'reopened_at' => 'datetime',
-        'resolved_at' => 'datetime',
-        'deleted_at' => 'datetime',
-    ];
-
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+     public function client(): BelongsTo
+     {
+         return $this->belongsTo(User::class, 'client_id');
+     }
 }

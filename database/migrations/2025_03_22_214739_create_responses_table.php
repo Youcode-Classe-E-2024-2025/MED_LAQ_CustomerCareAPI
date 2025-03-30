@@ -9,15 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('content');
-            $table->timestamp('edited_at');
-            $table->foreignId('edited_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('ticket_id')->constrained('tickets');
+            $table->foreignId('agent_id')->constrained('users'); //Assuming you use users table. Adjust if needed.
+            $table->text('message');
             $table->timestamps();
         });
     }

@@ -3,37 +3,23 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class Response extends Model
 
 {
-    use HasFactory;
-    protected $fillable = [
-        'ticket_id',
-        'user_id',
-        'content',
-        'edited_at',
-        'edited_by',
-    ];
+    use HasFactory, HasApiTokens;
+    protected $fillable = ['ticket_id', 'agent_id', 'message'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function ticket()
+    public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
     }
 
-    public function editedBy()
+    public function agent(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'edited_by');
-    }
-
-    public function scopeForTicket($query, $ticketId)
-    {
-        return $query->where('ticket_id', $ticketId);
+        return $this->belongsTo(User::class, 'agent_id');
     }
 }

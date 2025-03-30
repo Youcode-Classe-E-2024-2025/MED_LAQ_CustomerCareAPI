@@ -3,6 +3,9 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use APP\Models\Response;
+use App\Models\Ticket;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Response>
@@ -17,11 +20,9 @@ class ResponseFactory extends Factory
     public function definition(): array
     {
         return [
-            'content' => $this->faker->paragraph,
-            'ticket_id' => \App\Models\Ticket::factory(),
-            'user_id' => \App\Models\User::factory(),
-            'edited_at' => now(),
-            'edited_by' => \App\Models\User::factory(),
+            'ticket_id' => Ticket::factory(),
+            'agent_id' => User::factory()->create(['role' => 'agent'])->id,
+            'message' => $this->faker->paragraph,
             'created_at' => now(),
             'updated_at' => now(),
         ];
