@@ -1,17 +1,30 @@
-import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
+import axios from 'axios';
 import { Head } from '@inertiajs/react';
 
 export default function Register() {
-    const { data, setData, post, processing, errors } = useForm({
+    const [data, setData] = useState({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
     });
+    const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        post('/register');
+        setProcessing(true);
+        try {
+            await axios.post('/register', data);
+            window.location.href = '/dashboard'; // Redirect on success
+        } catch (error) {
+            if (error.response && error.response.data.errors) {
+                setErrors(error.response.data.errors);
+            }
+        } finally {
+            setProcessing(false);
+        }
     };
 
     return (
@@ -26,7 +39,7 @@ export default function Register() {
                             id="name"
                             type="text"
                             value={data.name}
-                            onChange={e => setData('name', e.target.value)}
+                            onChange={e => setData({ ...data, name: e.target.value })}
                             required
                             autoFocus
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -39,7 +52,7 @@ export default function Register() {
                             id="email"
                             type="email"
                             value={data.email}
-                            onChange={e => setData('email', e.target.value)}
+                            onChange={e => setData({ ...data, email: e.target.value })}
                             required
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
@@ -51,7 +64,7 @@ export default function Register() {
                             id="password"
                             type="password"
                             value={data.password}
-                            onChange={e => setData('password', e.target.value)}
+                            onChange={e => setData({ ...data, password: e.target.value })}
                             required
                             autoComplete="new-password"
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -64,7 +77,7 @@ export default function Register() {
                             id="password_confirmation"
                             type="password"
                             value={data.password_confirmation}
-                            onChange={e => setData('password_confirmation', e.target.value)}
+                            onChange={e => setData({ ...data, password_confirmation: e.target.value })}
                             required
                             autoComplete="new-password"
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
