@@ -15,54 +15,36 @@ class TicketRepository
         $this->ticket = $ticket;
     }
 
-    public function createTicket($data)
+    public function store($data)
     {
         return $this->ticket->create($data);
     }
 
-    public function getAllTickets()
+    public function index()
     {
         return $this->ticket->all();
     }
-    public function getAllTicketsByUserId($userId)
+    public function show($ticket)
     {
-        return $this->ticket->where('user_id', $userId)->get();
-    }
-    public function getAllTicketsByStatus($status)
-    {
-        return $this->ticket->where('status', $status)->get();
-    }
-    public function getTicketById($id)
-    {
-        return $this->ticket->find($id);
+        return $this->ticket->find($ticket);
     }
 
-    public function updateTicket($id, $data)
+    public function updateStatus($ticket, $status)
     {
-        $ticket = $this->getTicketById($id);
-        if ($ticket) {
-            $ticket->update($data);
-            return $ticket;
-        }
-        return null;
+        $ticket = $this->ticket->find($ticket);
+        $ticket->status = $status;
+        return $ticket->save();
     }
 
-    public function deleteTicket($id)
+    public function clientTickets($clientId)
     {
-        $ticket = $this->getTicketById($id);
-        if ($ticket) {
-            return $ticket->delete();
-        }
-        return false;
-    }
-    public function getTicketsByUserId($userId)
-    {
-        return $this->ticket->where('user_id', $userId)->get();
-    }
-    public function getTicketsByStatus($status)
-    {
-        return $this->ticket->where('status', $status)->get();
+        return $this->ticket->where('client_id', $clientId)->get();
     }
 
+    public function deleteTicket($ticket)
+    {
+        $ticket = $this->ticket->find($ticket);
+        return $ticket->delete();
+    }
 
 }

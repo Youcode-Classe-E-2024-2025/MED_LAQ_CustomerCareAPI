@@ -20,11 +20,37 @@ class TicketService
         $this->ticketRepository = $ticketRepository;
     }
 
-    public function createTicket($data)
+    public function store($data)
+{
+    $validator = Validator::make($data, [
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'status' => 'required|in:open,closed',
+    ]);
+
+    if ($validator->fails()) {
+        throw new ValidationException($validator);
+    }
+
+    $data['client_id'] = Auth::id();
+
+    return $this->ticketRepository->store($data);
+}
+
+    public function index()
     {
-        $validator = Validator::make($data, [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+        return $this->ticketRepository->index();
+    }
+
+    public function show($ticket)
+    {
+        return $this->ticketRepository->show($ticket);
+    }
+
+
+    public function updateStatus($ticket, $status)
+    {
+        $validator = Validator::make(['status' => $status], [
             'status' => 'required|in:open,closed',
         ]);
 
@@ -32,50 +58,14 @@ class TicketService
             throw new ValidationException($validator);
         }
 
-        $data['user_id'] = Auth::id();
-
-        return $this->ticketRepository->createTicket($data);
+        return $this->ticketRepository->updateStatus($ticket, $status);
     }
-    public function getAllTickets()
+    public function clientTickets($clientId)
     {
-        return $this->ticketRepository->getAllTickets();
+        return $this->ticketRepository->clientTickets($clientId);
     }
-    public function getAllTicketsByUserId($userId)
+    public function deleteTicket($ticket)
     {
-        return $this->ticketRepository->getAllTicketsByUserId($userId);
-    }
-    public function getAllTicketsByStatus($status)
-    {
-        return $this->ticketRepository->getAllTicketsByStatus($status);
-    }
-    public function getTicketById($id)
-    {
-        return $this->ticketRepository->getTicketById($id);
-    }
-    public function updateTicket($id, $data)
-    {
-        $validator = Validator::make($data, [
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'status' => 'sometimes|required|in:open,closed',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-
-        return $this->ticketRepository->updateTicket($id, $data);
-    }
-    public function deleteTicket($id)
-    {
-        return $this->ticketRepository->deleteTicket($id);
-    }
-    public function getTicketsByUserId($userId)
-    {
-        return $this->ticketRepository->getTicketsByUserId($userId);
-    }
-    public function getTicketsByStatus($status)
-    {
-        return $this->ticketRepository->getTicketsByStatus($status);
+        return $this->ticketRepository->deleteTicket($ticket);
     }
 }

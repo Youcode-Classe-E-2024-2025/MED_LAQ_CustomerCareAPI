@@ -13,96 +13,61 @@ class ResponseController extends Controller
         $this->responseService = $responseService;
     }
 
-    public function index()
-{
-    try {
-        $responses = $this->responseService->all();
-
-        return response()->json([
-            'responses' => $responses,
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'An error occurred while retrieving responses',
-            'error' => $e->getMessage()
-        ], 500);
-    }
-}
-
-    public function store(Request $request, $id)
+    public function createResponse(Request $request)
     {
-        $validated = $request->validate([
-            'content' => 'required|string'
+        $data = $request->validate([
+            'ticket_id' => 'required|exists:tickets,id',
+            'content' => 'required|string',
         ]);
 
-        $validated['ticket_id'] = $id;
+        $response = $this->responseService->createResponse($data);
 
-        $response = $this->responseService->create($validated);
-
-        if (!$response) {
-            return response()->json([
-                'message' => "you can't add response to this ticket"
-            ], 403);
-        }
-
-        return response()->json([
-            'response' => $response,
-            'message' => 'response created'
-        ], 201);
+        return response()->json($response, 201);
     }
-
-    
-    public function show(string $id)
+    public function getAllResponses($ticketId)
     {
-        $response = $this->responseService->find($id);
+        $responses = $this->responseService->getAllResponses($ticketId);
 
-        if (!$response) {
-            return response()->json([
-                'message' => 'not fount',
-            ], 404);
-        }
-
-        return response()->json([
-            'response' => $response
-        ], 200);
+        return response()->json($responses);
     }
-
-    
-    public function update(Request $request, string $id)
+    public function getResponseById($id)
     {
-        $validated = $request->validate(['content' => 'required|string']);
+        $response = $this->responseService->getResponseById($id);
 
-        $response = $this->responseService->update($id, $validated);
-
-        if (!$response) {
-            return response()->json([
-                'message' => 'not found',
-            ], 404);
-        }
-
-        return response()->json([
-            'response' => $response,
-            'message' => 'response updated'
-        ], 201);
+        return response()->json($response);
     }
-
-    public function destroy(string $id)
+    public function updateResponse(Request $request, $id)
     {
-        $result = $this->responseService->delete($id);
+        $data = $request->validate([
+            'content' => 'required|string',
+        ]);
 
-        if (!$result) {
-            return response()->json([
-                'message' => 'not found',
-            ], 404);
-        }
+        $response = $this->responseService->updateResponse($id, $data);
 
-        return response()->json([
-            'message' => 'response deleted',
-        ], 200);
+        return response()->json($response);
     }
-
-    public function getTicketResponses(int $ticketId)
+    public function deleteResponse($id)
     {
-        return $this->responseService->getTicketResponses($ticketId);
+        $response = $this->responseService->deleteResponse($id);
+
+        return response()->json(['message' => 'Response deleted successfully']);
+    }
+    public function getResponsesByTicketId($ticketId)
+    {
+        $responses = $this->responseService->getResponsesByTicketId($ticketId);
+
+        return response()->json($responses);
+    }
+    public function getResponsesByUserId($userId)
+    {
+        $responses = $this->responseService->getResponsesByUserId($userId);
+
+        return response()->json($responses);
+    }
+    public function getResponsesByStatus($ticketId, $status)
+    {
+        $responses = $this->responseService->getResponsesByStatus($ticketId, $status);
+
+        return response()->json($responses);
     }
 }
